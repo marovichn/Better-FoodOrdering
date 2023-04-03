@@ -11,6 +11,15 @@
   padding: 0;
 }
 
+.mealsLoading {
+  border-radius: 10px;
+  margin-left: 12.5%;
+  width: 75%;
+  color: black;
+  text-align: center;
+  background-color: white;
+}
+
 @keyframes meals-appear {
   from {
     opacity: 0;
