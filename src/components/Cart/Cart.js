@@ -11,7 +11,7 @@ const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -30,27 +30,33 @@ const Cart = (props) => {
 
   const submitOrderHandler = async (userData) => {
     setIsSubmiting(true);
-    const orderData = {
-      user: userData,
-      orderedItems: cartCtx.items,
-    };
+    try {
+      const orderData = {
+        user: userData,
+        orderedItems: cartCtx.items,
+      };
 
-    const response = await fetch(
-      "https://simple-react-app-2b7b6-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
-      {
-        method: "POST",
-        body: JSON.stringify(orderData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch(
+        "https://simple-react-app-2b7b6-default-rtdb.europe-west1.firebasedatabase.app/orders",
+        {
+          method: "POST",
+          body: JSON.stringify(orderData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong, try again.");
       }
-    );
-    if (!response.ok) {
-      setErrorMessage("Something went wrong, try again.");
-    }
 
-    setIsSubmiting(false);
-    setDidSubmit(true);
+      setIsSubmiting(false);
+      setDidSubmit(true);
+      cartCtx.clearCart();
+    } catch (error) {
+      setErrorMessage(error.message);
+      setIsSubmiting(false);
+    }
   };
 
   const cartItems = (
@@ -110,12 +116,21 @@ const Cart = (props) => {
       </div>
     </React.Fragment>
   );
+  const errorContent = (
+    <React.Fragment>
+      <h1 className={classes.invalid}>{errorMessage}</h1>
+      <div className={classes.actions}>
+        <button>Try Again</button>
+      </div>
+    </React.Fragment>
+  );
 
   return (
     <Modal onClose={props.onClose}>
-      {!isSubmiting && !didSubmit && cartModalContent}
-      {isSubmiting && !didSubmit && submitingContent}
-      {didSubmit && !isSubmiting && successContent}
+      {!isSubmiting && !didSubmit && !errorMessage && cartModalContent}
+      {isSubmiting && !didSubmit && !errorMessage && submitingContent}
+      {didSubmit && !isSubmiting && !errorMessage && successContent}
+      {errorMessage && errorContent}
     </Modal>
   );
 };
