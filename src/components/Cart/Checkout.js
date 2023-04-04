@@ -21,7 +21,7 @@ const Checkout = (props) => {
   const postalInputRef = useRef();
   const cityInputRef = useRef();
 
-  const nameChangedHandler = (e) => {
+  /*   const nameChangedHandler = (e) => {
     if (isEmpty(e.target.value)) {
       setFormInputValidity((prev) => {
         return { ...prev, name: false };
@@ -64,7 +64,7 @@ const Checkout = (props) => {
         return { ...prev, city: true };
       });
     }
-  };
+  }; */
 
   const confirmHandler = (e) => {
     e.preventDefault();
@@ -84,8 +84,8 @@ const Checkout = (props) => {
         ...prev,
         name: enteredNameIsValid,
         street: enteredStreetIsValid,
-        postal: enteredCityIsValid,
-        city: enteredPostalIsValid,
+        postal: enteredPostalIsValid,
+        city: enteredCityIsValid,
       };
     });
 
@@ -99,14 +99,13 @@ const Checkout = (props) => {
       return;
     }
 
-    const orderData = {
-      id: "id" + Math.random(),
-      name: nameInputRef.current.value,
-      street: streetInputRef.current.value,
-      postal: postalInputRef.current.value,
-      city: cityInputRef.current.value,
+    const userData = {
+      name: enteredName,
+      street: enteredStreet,
+      postal: enteredPostal,
+      city: enteredCity,
     };
-    props.onConfirmOrder(orderData);
+    props.onConfirmOrder(userData);
   };
 
   const nameInputClasses = `${classes.control} ${
@@ -126,36 +125,21 @@ const Checkout = (props) => {
     <form onSubmit={confirmHandler}>
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
-        <input
-          onChange={nameChangedHandler}
-          ref={nameInputRef}
-          type="text"
-          id="name"
-        ></input>
+        <input ref={nameInputRef} type="text" id="name"></input>
         {!formInputValidity.name && (
           <p className={classes.invalidMessage}>Please enter a valid name!</p>
         )}
       </div>
       <div className={streetInputClasses}>
         <label htmlFor="street">Street</label>
-        <input
-          onChange={streetChangedHandler}
-          ref={streetInputRef}
-          type="text"
-          id="street"
-        ></input>
+        <input ref={streetInputRef} type="text" id="street"></input>
         {!formInputValidity.street && (
           <p className={classes.invalidMessage}>Please enter a valid street!</p>
         )}
       </div>
       <div className={postalInputClasses}>
         <label htmlFor="postal">Postal</label>
-        <input
-          onChange={postalChangedHandler}
-          ref={postalInputRef}
-          type="text"
-          id="postal"
-        ></input>
+        <input ref={postalInputRef} type="text" id="postal"></input>
         {!formInputValidity.postal && (
           <p className={classes.invalidMessage}>
             Please enter a valid postal code!
@@ -164,12 +148,7 @@ const Checkout = (props) => {
       </div>
       <div className={cityInputClasses}>
         <label htmlFor="city">City</label>
-        <input
-          onChange={cityChangedHandler}
-          ref={cityInputRef}
-          type="text"
-          id="city"
-        ></input>
+        <input ref={cityInputRef} type="text" id="city"></input>
         {!formInputValidity.city && (
           <p className={classes.invalidMessage}>Please enter a valid city!</p>
         )}
