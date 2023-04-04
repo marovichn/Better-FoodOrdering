@@ -37,7 +37,7 @@ const Cart = (props) => {
       };
 
       const response = await fetch(
-        "https://simple-react-app-2b7b6-default-rtdb.europe-west1.firebasedatabase.app/orders",
+        "https://simple-react-app-2b7b6-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
         {
           method: "POST",
           body: JSON.stringify(orderData),
@@ -56,6 +56,7 @@ const Cart = (props) => {
     } catch (error) {
       setErrorMessage(error.message);
       setIsSubmiting(false);
+      cartCtx.clearCart();
     }
   };
 
@@ -105,6 +106,7 @@ const Cart = (props) => {
   );
 
   const submitingContent = <h1>Sending your order data...</h1>;
+
   const successContent = (
     <React.Fragment>
       <h1>
@@ -116,11 +118,12 @@ const Cart = (props) => {
       </div>
     </React.Fragment>
   );
+
   const errorContent = (
     <React.Fragment>
       <h1 className={classes.invalid}>{errorMessage}</h1>
       <div className={classes.actions}>
-        <button>Try Again</button>
+        <button onClick={props.onClose}>Try Again</button>
       </div>
     </React.Fragment>
   );
