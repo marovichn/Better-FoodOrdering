@@ -15,6 +15,7 @@ const AvailableMeals = () => {
         "https://simple-react-app-2b7b6-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
       );
       if (!response.ok) {
+        throw new Error("Something went wrong!");
         return;
       }
       const responseData = await response.json();
@@ -31,13 +32,24 @@ const AvailableMeals = () => {
       setMeals(loadedMeals);
       setIsLoading(false);
     };
-    FetchMeals();
+    FetchMeals().catch((err) => {
+      setIsLoading(false);
+      setHttpError(err.message);
+    });
   }, []);
 
   if (isLoading) {
     return (
       <section className={classes.mealsLoading}>
         <h1>Loading...</h1>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={classes.mealsError}>
+        <h1>Something went wrong!</h1>
       </section>
     );
   }
