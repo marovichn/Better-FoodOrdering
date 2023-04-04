@@ -21,6 +21,51 @@ const Checkout = (props) => {
   const postalInputRef = useRef();
   const cityInputRef = useRef();
 
+  const nameChangedHandler = (e) => {
+    if (isEmpty(e.target.value)) {
+      setFormInputValidity((prev) => {
+        return { ...prev, name: false };
+      });
+    } else {
+      setFormInputValidity((prev) => {
+        return { ...prev, name: true };
+      });
+    }
+  };
+  const streetChangedHandler = () => {
+    if (isEmpty(e.target.value)) {
+      setFormInputValidity((prev) => {
+        return { ...prev, street: false };
+      });
+    } else {
+      setFormInputValidity((prev) => {
+        return { ...prev, street: true };
+      });
+    }
+  };
+  const postalChangedHandler = (e) => {
+    if (isEmpty(e.target.value)) {
+      setFormInputValidity((prev) => {
+        return { ...prev, postal: false };
+      });
+    } else {
+      setFormInputValidity((prev) => {
+        return { ...prev, postal: true };
+      });
+    }
+  };
+  const cityChangedHandler = (e) => {
+    if (isEmpty(e.target.value)) {
+      setFormInputValidity((prev) => {
+        return { ...prev, city: false };
+      });
+    } else {
+      setFormInputValidity((prev) => {
+        return { ...prev, city: true };
+      });
+    }
+  };
+
   const confirmHandler = (e) => {
     e.preventDefault();
 
@@ -82,8 +127,8 @@ const Checkout = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          /* onChange={nameChangedHandler}
-           */ ref={nameInputRef}
+          onChange={nameChangedHandler}
+          ref={nameInputRef}
           type="text"
           id="name"
         ></input>
@@ -94,7 +139,7 @@ const Checkout = (props) => {
       <div className={streetInputClasses}>
         <label htmlFor="street">Street</label>
         <input
-          /* onChange={streetChangedHandler} */
+          onChange={streetChangedHandler}
           ref={streetInputRef}
           type="text"
           id="street"
@@ -106,7 +151,7 @@ const Checkout = (props) => {
       <div className={postalInputClasses}>
         <label htmlFor="postal">Postal</label>
         <input
-          /* onChange={postalChangedHandler} */
+          onChange={postalChangedHandler}
           ref={postalInputRef}
           type="text"
           id="postal"
@@ -120,8 +165,8 @@ const Checkout = (props) => {
       <div className={cityInputClasses}>
         <label htmlFor="city">City</label>
         <input
-          /* onChange={cityChangedHandler}
-           */ ref={cityInputRef}
+          onChange={cityChangedHandler}
+          ref={cityInputRef}
           type="text"
           id="city"
         ></input>
